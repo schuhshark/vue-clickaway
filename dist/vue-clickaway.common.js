@@ -53,7 +53,13 @@ function bind(el, binding, vnode) {
     // @NOTE: `.path` is non-standard, the standard way is `.composedPath()`
     var path = ev.path || (ev.composedPath ? ev.composedPath() : undefined);
     if (initialMacrotaskEnded && (path ? path.indexOf(el) < 0 : !el.contains(ev.target))) {
-      return callback.call(vm, ev);
+      var snackbar = document.getElementById('snackbar');
+      if (snackbar) {
+        if (el !== snackbar && !snackbar.contains(ev.target))
+          return callback.call(vm, ev);
+      } else {
+        return callback.call(vm, ev);
+      }
     }
   };
 
